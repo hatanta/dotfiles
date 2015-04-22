@@ -109,8 +109,11 @@ nnoremap <silent> [unite]B :<C-u>UniteBookmarkAdd %<CR>
 " unite grep
 let g:unite_enable_ignore_case = 1
 let g:unite_enable_smart_case = 1
-nnoremap <silent> [unite]g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
-nnoremap <silent> [unite]cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
+"nnoremap <silent> [unite]g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+"nnoremap <silent> [unite]cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
+"nnoremap <silent> [unite]rg :<C-u>UniteResume search-buffer<CR>
+nnoremap <silent> [unite]g  :<C-u>Unite vimgrep<CR>
+nnoremap <silent> [unite]cg :<C-u>Unite vimgrep<CR><C-R><C-W>
 nnoremap <silent> [unite]rg :<C-u>UniteResume search-buffer<CR>
 
 if executable('ag')
