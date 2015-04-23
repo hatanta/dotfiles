@@ -28,29 +28,16 @@ Plugin 'gmarik/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
 Plugin 'ervandew/supertab'
 "Plugin 'Shougo/vimproc.vim'
-Plugin 'Shougo/unite.vim'
+Plugin 'Shougo/vimfiler.vim'
 Plugin 'Shougo/neomru.vim'
+Plugin 'Shougo/unite.vim'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'sjl/gundo.vim'
-"Plugin 'altercation/vim-colors-scolarized'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
 " General
 nnoremap <leader>h :wincmd h<CR>
@@ -71,13 +58,26 @@ nnoremap <leader>q :bd<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Gundo
-nnoremap <leader>u :GundoToggle<CR>
+"nnoremap <leader>u :GundoToggle<CR>
 
-" NERDTree
-nnoremap <silent> <leader>n :NERDTreeToggle<CR>
+" VimFiler
+"let g:vimfiler_as_default_explorer = 1
+nnoremap <silent> <leader>ee :VimFilerBufferDir<CR>
+nnoremap <silent> <leader>eb :VimFiler bookmark:<CR>
 
 "" Unite
+nnoremap    [unite]   <Nop>
+nmap    <leader> [unite]
+nnoremap <silent> [unite]ff :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <silent> [unite]fb :<C-u>Unite buffer bookmark file_mru<CR>
+nnoremap <silent> [unite]fs :<C-u>Unite source<CR>
+nnoremap <silent> [unite]fr :<C-u>UniteResume<CR>
+nnoremap <silent> [unite]fg :<C-u>Unite vimgrep<CR>
+nnoremap <silent> [unite]fa :<C-u>UniteBookmarkAdd 
+
 let g:unite_source_history_yank_enable = 1
+let g:unite_enable_ignore_case = 1
+let g:unite_enable_smart_case = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 
 autocmd FileType unite call s:unite_settings()
@@ -88,33 +88,6 @@ function! s:unite_settings()
   imap <buffer> <C-j>   <Plug>(unite_select_next_line)
   imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
 endfunction
-
-nnoremap    [unite]   <Nop>
-nmap    <leader> [unite]
-
-"nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir -buffer-name=files buffer bookmark file<CR>
-nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=files buffer bookmark<CR>
-nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=mru     file_mru<cr>
-"nnoremap <silent> [unite]o  :<C-u>Unite outline<CR>
-nnoremap <silent> [unite]m :<C-u>Unite output:message<CR>
-nnoremap <silent> [unite]y  :<C-u>Unite history/yank<CR>
-nnoremap <silent> [unite]s :<C-u>Unite source<CR>
-nnoremap <silent> [unite]B :<C-u>UniteBookmarkAdd %<CR>
-"nnoremap <silent> [unite]s
-"        \ :<C-u>Unite -buffer-name=files -no-split
-"        \ jump_point file_point buffer_tab
-"        \ file_rec:! file file/new<CR>
-
-" unite grep
-let g:unite_enable_ignore_case = 1
-let g:unite_enable_smart_case = 1
-"nnoremap <silent> [unite]g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
-"nnoremap <silent> [unite]cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
-"nnoremap <silent> [unite]rg :<C-u>UniteResume search-buffer<CR>
-nnoremap <silent> [unite]g  :<C-u>Unite vimgrep<CR>
-nnoremap <silent> [unite]cg :<C-u>Unite vimgrep<CR><C-R><C-W>
-nnoremap <silent> [unite]rg :<C-u>UniteResume search-buffer<CR>
 
 if executable('ag')
   let g:unite_source_grep_command = 'ag'
@@ -135,13 +108,19 @@ set history=700
 " Set to auto read when a file is changed from the outside
 set autoread
 
+" Automatically change the current directory
+"set autochdir
+
+" If above doesnt work use below
+autocmd BufEnter * silent! lcd %:p:h
+
+
 " Bakups
 set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set backupskip=/tmp/*,/private/tmp/*
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupdir=~/.vim-tmp
+set backupskip=/tmp/*
+set directory=~/.vim-tmp
 set writebackup
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -166,11 +145,11 @@ set ruler
 "set cmdheight=2
 
 " A buffer becomes hidden when it is abandoned
-"set hid
+set hid
 
 " Configure backspace so it acts as it should act
-"set backspace=eol,start,indent
-"set whichwrap+=<,>,h,l
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 "if has('mouse')
@@ -262,19 +241,18 @@ set tabstop=4
 "set si "Smart indent
 set wrap "Wrap lines
 
+" default of gvim is tcq
+" t > auto-wrap text using textwidth
+" c > auto-wrap comments using text width, inserting the current comment
+" q > auto formatting of comments with gq
+set formatoptions =""
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
 
-" Shortcuts using <leader>
-"map <leader>sn ]s
-"map <leader>sp [s
-"map <leader>sa zg
-"map <leader>s? z=
-
-"this is a test
 "set diffexpr=MyDiff()
 "function MyDiff()
 "  let opt = '-a --binary '
