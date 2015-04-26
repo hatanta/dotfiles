@@ -5,96 +5,9 @@ behave mswin
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-"let mapleader = " "
-"let g:mapleader = " "
-map <Space> <Leader>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Copied from Vundle
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible              " be iMproved, required
-filetype off                  " required
+"map <Space> <Leader>
 
-" set the runtime path to include Vundle and initialize
-set rtp+=$HOME/vimfiles/bundle/Vundle.vim/
-let path='$HOME/vimfiles/bundle'
-call vundle#begin(path)
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-Plugin 'bling/vim-airline'
-Plugin 'ervandew/supertab'
-"Plugin 'Shougo/vimproc.vim'
-Plugin 'Shougo/vimfiler.vim'
-Plugin 'Shougo/neomru.vim'
-Plugin 'Shougo/unite.vim'
-Plugin 'flazz/vim-colorschemes'
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-
-" General
-nnoremap <leader>h :wincmd h<CR>
-nnoremap <leader>j :wincmd j<CR>
-nnoremap <leader>k :wincmd k<CR>
-nnoremap <leader>l :wincmd l<CR>
-nnoremap <leader>H :wincmd H<CR>
-nnoremap <leader>J :wincmd J<CR>
-nnoremap <leader>K :wincmd K<CR>
-nnoremap <leader>L :wincmd L<CR>
-nnoremap <leader>o :wincmd o<cr>
-nnoremap <leader>= :wincmd =<cr>
-
-nnoremap <leader>q :bd<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugin Remap
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Gundo
-"nnoremap <leader>u :GundoToggle<CR>
-
-" VimFiler
-"let g:vimfiler_as_default_explorer = 1
-nnoremap <silent> <leader>ee :VimFilerBufferDir<CR>
-nnoremap <silent> <leader>eb :VimFiler bookmark:<CR>
-
-"" Unite
-nnoremap    [unite]   <Nop>
-nmap    <leader> [unite]
-nnoremap <silent> [unite]ff :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-nnoremap <silent> [unite]fb :<C-u>Unite buffer bookmark file_mru<CR>
-nnoremap <silent> [unite]fs :<C-u>Unite source<CR>
-nnoremap <silent> [unite]fr :<C-u>UniteResume<CR>
-nnoremap <silent> [unite]fg :<C-u>Unite vimgrep<CR>
-nnoremap <silent> [unite]fa :<C-u>UniteBookmarkAdd 
-
-let g:unite_source_history_yank_enable = 1
-let g:unite_enable_ignore_case = 1
-let g:unite_enable_smart_case = 1
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-  " Play nice with supertab
-  let b:SuperTabDisabled=1
-  " Enable navigation with control-j and control-k in insert mode
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-endfunction
-
-if executable('ag')
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-  let g:unite_source_grep_recursive_opt = ''
-endif
-
+"nnoremap <leader>b :E $USERPROFILE/Links<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -109,10 +22,10 @@ set history=700
 set autoread
 
 " Automatically change the current directory
-"set autochdir
+set autochdir
 
 " If above doesnt work use below
-autocmd BufEnter * silent! lcd %:p:h
+"autocmd BufEnter * silent! lcd %:p:h
 
 
 " Bakups
@@ -121,6 +34,7 @@ set backupdir=~/.vim-tmp
 set backupskip=/tmp/*
 set directory=~/.vim-tmp
 set writebackup
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -209,10 +123,8 @@ nnoremap k gk
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable 
-set background=dark
-"color grb256
-color solarized
-set guifont=Consolas:h10:cANSI
+color desert
+set guifont=Consolas:h11:cANSI
 
 " Set utf8 as standard encoding and en_US as the standard language
 "set encoding=utf8
@@ -237,7 +149,7 @@ set tabstop=4
 "set lbr
 "set tw=500
 
-"set ai "Auto indent
+set ai "Auto indent
 "set si "Smart indent
 set wrap "Wrap lines
 
